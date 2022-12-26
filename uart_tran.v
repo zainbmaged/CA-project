@@ -1,4 +1,4 @@
-module uart_rx #(
+module uart_tx #(
     parameter DBIT = 8,  //d a t a b i t s
     parameter SB_TICK = 16 //ticks stop for bits
 )(
