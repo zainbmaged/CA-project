@@ -26,3 +26,5 @@ description).
 - Any additional information, such as enhancements made in the implementation.
 - Any figure in the pdf should have a caption under it and any existing figure
 should be referred in the written paragraphs.
+### Report 
+link to Report[https://docs.google.com/document/d/1qxBy48igt0ZQ-j39Rg0m6kxNJaB7KchV/edit?usp=sharing&ouid=113656671217341831442&rtpof=true&sd=true]
