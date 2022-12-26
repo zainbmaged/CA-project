@@ -10,11 +10,11 @@ Menna Allah Mohamed Elkhwass|1901205
 Nada Waleed Mohammed Ebed| 1901544
 Sara Ramadan Mohamed |1901309
 ### Expected delivery
-1- Each group should deliver the following.
+1. Each group should deliver the following.
 - A report in pdf format describing the project details (e.g., block diagram, signals
 description, and implementation).
 - The source code of the project and the testbench used to verify it.
-2- The report should contain.
+2. The report should contain.
 - Cover with team member names and team members IDs.
 - Table of contents.
 - Block Diagram for your design.
