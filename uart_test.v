@@ -23,5 +23,5 @@ module uart_test
     assign rec_data1 = rec_data +1;
     assign led = rec_data;
     assign an = 4'b1110;
-    assign sseg = {1'b1, ~tx_full, 2;b11, ~rx_empty, 3'b111};
+    assign sseg = {1'b1, ~tx_full, 2'b11, ~rx_empty, 3'b111};
   endmodule
