@@ -1,30 +1,30 @@
 module apb_gpio (
 // assume data size is 32
 
-  input                         PRESETn,
-                                PCLK,
-  input                         PSEL,
+  input                         PRESETn,// reset
+                                PCLK,// system clock
+  input                         PSEL,// 1 bit psel input to gpio output from Apb
   input                         PENABLE,
-  input      [             3:0] PADDR,
+  input                   [3:0] PADDR,// 4 bit address sent from Apb
   input                         PWRITE,
-  input      [            3 :0] PSTRB,
-  input      [            31:0] PWDATA,
-  output reg [            31:0] PRDATA,
+  input                  [3 :0] PSTRB,// acesss byte(4 bits)
+  input                  [31:0] PWDATA,
+  output reg             [31:0] PRDATA,
   output                        PREADY,
   output                        PSLVERR,
 
   output reg                    irq_o,
 
-  input      [            31:0] gpio_i,
-  output reg [            31:0] gpio_o,
+  input                  [31:0] gpio_i,
+  output reg             [31:0] gpio_o,
                                 gpio_oe
 );
 
 
-  localparam PADDR_SIZE = $bits(PADDR);
+  parameter PADDR_SIZE = $bits(PADDR);// adress sent from Apb size in bits
 
 
-  localparam MODE      = 0,
+  parameter  MODE      = 0,
              DIRECTION = 1,
              OUTPUT    = 2,
              INPUT     = 3,
@@ -35,16 +35,13 @@ module apb_gpio (
              IRQ_ENA   = 8;
 
   //number of synchronisation flipflop stages on GPIO inputs
-  localparam INPUT_STAGES = 2;
+  parameter INPUT_STAGES = 2;
 
 
-  //////////////////////////////////////////////////////////////////
-  //
-  // Variables
-  //
+ 
 
   //Control registers
-  logic [31:0] mode_reg,
+  reg [31:0]             mode_reg,
                          dir_reg,
                          out_reg,
                          in_reg,
@@ -55,18 +52,17 @@ module apb_gpio (
                          irq_ena_reg;
 
   //Trigger registers
-  logic [31:0] tr_in_dly_reg,
+  reg [31:0] tr_in_dly_reg,
                          tr_rising_edge_reg,
                          tr_falling_edge_reg,
                          tr_status;
 
 
   //Input register, to prevent metastability
-  logic [31:0] input_regs [INPUT_STAGES];
+  reg [31:0] input_regs [INPUT_STAGES];
 
 
-  //////////////////////////////////////////////////////////////////
-  //
+
   // Functions
   //
 
