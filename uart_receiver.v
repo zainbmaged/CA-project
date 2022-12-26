@@ -7,7 +7,7 @@ module uart_rx
     output reg rx_done_tick,
     output [DBIT - 1:0] rx_dout
   );
-  local param idle = 0, start = 1, data = 2, stop = 3;
+  localparam idle = 0, start = 1, data = 2, stop = 3;
   
   reg [1:0] state_reg, state_next;
   reg [3:0] s_reg, s_next;
