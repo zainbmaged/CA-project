@@ -17,7 +17,7 @@ module apb_prptocol(input PCLK,
     
     apbmaster Design_master (Transfer,Wr_Rd [1:0],Address,write_data,read_data,PCLK,
     PRESETn,PREADY,PRDATA,PSLVERR,PADDR,PSELx,PENABLE,PWRITE,PWDATA);
-    gpio_apb  Design_slave(PCLK,PRESETn, PSEL1,PENABLE,PWRITE, PADDR[31:0],
+    gpio_slave  Design_slave(PCLK,PRESETn, PSEL1,PENABLE,PWRITE, PADDR[31:0],
     PWDATA[31:0],PRDATA [31:0], PREADY);
 endmodule
 
