@@ -1,35 +1,44 @@
-module gpio_apb(
-         input PCLK,PRESETn,// system clock and reset signal
-         input PSEL,PENABLE,PWRITE,//control signals input to apb
-         input [31:0]PADDR,PWDATA,//adress and data to write input from apb to gpio
-        output [31:0]PRDATA1,// output data read from memory to apb
-        output reg PREADY );
+module gpio_slave(input PCLK,               //clock
+                 input PRESETn,            //active low reset
+                 input [32:0] PADDR,        //32 bit address
+                 input PSELx,              //select slave
+                 input PENABLE,            //indicate 2nd or subsequent cycle
+                 input PWRITE,             //high->write, low->read
+                 input [31:0]PWDATA,       //32 bit Data Bus
+                 output reg PREADY,        //ready status by slave
+                 output reg [31:0] PRDATA, //32 bit Data Bus
+                 output reg PSLVERR = 0);  //Error occurred
     
-     reg [31:0]reg_address; //register to save address
-     reg [31:0] mem [0:279]; 
-
-    assign PRDATA1 =  mem[reg_address];
-
-    always @(*)//always combinational
-       begin
-         if(!PRESETn)//rest
-              PREADY = 0;
-          else
-	  if(PSEL && !PENABLE && !PWRITE)
-	     begin PREADY = 0; end
-	         
-	  else if(PSEL && PENABLE && !PWRITE)
-	     begin  PREADY = 1;
-                    reg_address =  PADDR; //read adress
-	       end
-          else if(PSEL && !PENABLE && PWRITE)
-	     begin  PREADY = 0; end
-
-	  else if(PSEL && PENABLE && PWRITE)//write to memory 
-	     begin  PREADY = 1;
-	            mem[PADDR] = PWDATA; end 
-
-           else PREADY = 0;
+    reg [31:0] mem [0:31]; //32 bit wide and 32 locations
+    
+    reg [31:0] temp_data;
+    
+    always @(*) begin
+        if (!PRESETn)
+        begin
+            PREADY  = 0;
+            PSLVERR = 0;
         end
-    endmodule
-        
+        else
+        begin
+            if (PSELx && !PENABLE && !PWRITE) begin  //setup stage READ
+                PREADY = 0;
+            end
+            else if (PSELx && PENABLE && !PWRITE) begin  //access stage READ
+                PREADY = 1;
+                PRDATA = mem[PADDR];
+            end
+            else if (PSELx && !PENABLE && PWRITE) begin  //setup stage write
+                PREADY = 0;
+            end
+            else if (PSELx && PENABLE && PWRITE) begin  //access stage write
+                PREADY     = 1;
+                mem[PADDR] = PWDATA;
+            end
+            else
+                PREADY = 0;
+        end
+    end
+    
+    
+endmodule
