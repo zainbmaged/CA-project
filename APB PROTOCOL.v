@@ -11,13 +11,13 @@ module apb_prptocol(input PCLK,
 		           input [31:0] apb_read_paddr,
               output [31:0] read_data);
                
-    wire [31:0] PADDR;
+  
+    wire [32:0] PADDR;
     wire [31:0] PWDATA,PRDATA;
-    wire PSEL1,PENABLE,PWRITE,PREADY;
-    
+    wire PSELx,PENABLE,PWRITE,PREADY;
+	
     apbmaster Design_master (Transfer,Wr_Rd [1:0],Address,write_data,read_data,PCLK,
     PRESETn,PREADY,PRDATA,PSLVERR,PADDR,PSELx,PENABLE,PWRITE,PWDATA);
-    gpio_slave  Design_slave(PCLK,PRESETn, PSEL1,PENABLE,PWRITE, PADDR[31:0],
-    PWDATA[31:0],PRDATA [31:0], PREADY);
+    gpio_slave Design_slave(PCLK,PRESETn,PADDR,PSELx,PENABLE,PWRITE,PWDATA,PREADY,PRDATA);
 endmodule
 
