@@ -6,9 +6,9 @@ module apb_prptocol(input PCLK,
                input Transfer,
                input  Read_Write,
                input [31:0] apb_write_paddr,
-		           input [31:0] apb_write_data,
-		           input [31:0] apb_read_paddr,
-              output [31:0] read_dataout);
+	       input [31:0] apb_write_data,
+	       input [31:0] apb_read_paddr,
+               output [31:0] read_dataout);
                
     wire [31:0] PADDR;
     wire [31:0] PWDATA,PRDATA;
