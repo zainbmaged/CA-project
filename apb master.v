@@ -1,81 +1,154 @@
 module apbmaster(
-input 		pclk,preset,pready,
-input 	[1:0]	Read_write,//01-read,11-write
-output reg	psel,
+input 		pclk,preset,pready,transfer,
+input 		Read_write,//0-read,1-write
+output   	psel,
 output reg	penable,
-output 	  [31:0]paddr,
-output 		pwrite,
-output 		[31:0]pwdata,
-input  		[31:0]prdata
-    );
-    
-
-reg [31:0]cur_pwrite,nex_pwrite,cur_prdata,nex_prdata;
+output reg [32:0] paddr,
+output reg	pwrite,
+output reg [31:0]   pwdata,
+output reg [31:0]  readOut,
+input [31:0]    prdata,write_data,
+input [32:0]    write_addr,read_addr,
+output          PSlavErr // for errors
+);
+   
+reg invalid_setup_error,setup_error,invalid_read_paddr,invalid_write_paddr,invalid_write_data; 
 reg [1:0] cur_s,nex_s;
 parameter idle = 2'b00,setup = 2'b01,access = 2'b10;
 
+  
 always @(posedge pclk)
 begin
 	if(~preset)
-	begin
 		cur_s <= idle;
-		cur_pwrite <= 32'b0;
-		cur_prdata <= 32'b0;
-		end
 	else
-	begin
 		cur_s <= nex_s;
-		cur_pwrite <= nex_pwrite;
-		cur_prdata <= nex_prdata;
-	end
 end 
-
-always @(cur_s or Read_write)
+	
+	
+always @(cur_s or transfer or pready)
 begin
+	if(!preset)
+	  next_state = idle;
+	else
+          begin
+             pwrite = ~Read_write;
+	
 	case(cur_s)
 	idle:begin
-			if(Read_write[0])
-			begin
-			nex_s = setup;
-			nex_pwrite = Read_write[1];
-			end
-			else
+		penable=0;
+		if(!transfer) 
 			nex_s = idle;
-			end
+		else
+			nex_s = setup;
+	     end
 	setup:begin
-				psel = 1;
-				penable = 0;
-				nex_s = access;
-			end
-	access:begin
-				psel = 1;
-				penable = 1;
-				if(pready)
+		penable=0;		
+		 if(Read_write) 
+			
+	                       begin   paddr = read_addr; end
+			    else 
+			      begin   
+			        
+                                  paddr = write_addr;
+				  pwdata = write_data;  end
+			    
+			    if(transfer && !PSlavErr)
+			      nex_s = access;
+		            else
+           	              nex_s = idle;
+		  end
+		
+	access:begin 
+	         if(psel == 1)  penable = 1;
+		 if(transfer && !PSlavErr)
+		      begin
+			if(pready)
+			  begin 
+			        if(!Read_write)
 				begin
-				if(~cur_pwrite)
-				begin
-				nex_prdata = prdata;
-				nex_s = idle;
-				end
-				end
+				nex_s = setup;
+			
+				else  begin
+				nex_s = setup;
+			        readOut =prdata;	
+			              end
+		                end
+			        else 
+				  nex_s = access;
+			    end 
 				else
-				nex_s = access;
-			end
-	default:begin
-	psel = 0;
-	penable = 0;
-	nex_s = idle;
-	nex_prdata = cur_prdata;
-	nex_pwrite = cur_pwrite;
-	end
-	endcase
-end
+					nex_s = idle;
+		end
+	
+		
+	default: nex_s = idle;
+               	endcase
+             end
+        end
+		
+		assign psel = ((cur_s != idle) ? (paddr[32] ? 1'b0, : 1'b1) : 1'd0);
 
-assign paddr = (cur_s == access)?32'h32:32'h0000;
-assign pwrite = cur_pwrite;
-assign pwdata = (cur_s == access)?cur_prdata:32'b0;
+  // for errors
+  
+  always @(*)
+       begin
+        if(!preset)
+	    begin 
+	     setup_error =0;
+	     invalid_read_paddr = 0;
+	     invalid_write_paddr = 0;
+	     invalid_write_paddr =0 ;
+	    end
+        else
+	 begin	
+          begin
+	if(cur_s == idle && nex_s == access)
+   	  setup_error = 1;
+	  else setup_error = 0;
+          end
+          begin
+          if((write_data===8'dx) && (!Read_write) && (cur_s==SETUP || cur_s==access))
+		  invalid_write_data =1;
+	  else invalid_write_data = 0;
+          end
+          begin
+	 if((write_addr===33'dx) && Read_write && (cur_s==SETUP || cur_s==access))
+		  invalid_read_paddr = 1;
+	  else  invalid_read_paddr = 0;
+          end
+          begin
+         if((write_addr===33'dx) && (!Read_write) && (cur_s==SETUP || cur_s==access))
+		  invalid_write_paddr =1;
+          else invalid_write_paddr =0;
+          end
+          begin
+		  if(cur_s == setup)
+            begin
+		    if(pwrite)
+                      begin
+			      if(paddr==write_addr && pwdata==write_data)
+                              setup_error=1'b0;
+                         else
+                               setup_error=1'b1;
+                       end
+                 else 
+                       begin
+			       if (paddr==read_addr)
+                                 setup_error=1'b0;
+                          else
+                                 setup_error=1'b1;
+                       end    
+              end 
+          
+         else setup_error=1'b0;
+         end 
+       end
+       invalid_setup_error = setup_error ||  invalid_read_paddr || invalid_write_data || invalid_write_paddr  ;
+     end 
 
+   assign PSlavErr =  invalid_setup_error ;
 
-endmodule
-    
+	 
 
+ endmodule
