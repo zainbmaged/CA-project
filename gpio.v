@@ -1,6 +1,6 @@
 module gpio_slave(input PCLK,               //clock
                  input PRESETn,            //active low reset
-                 input [32:0] PADDR,        //32 bit address
+                  input [31:0] PADDR,        //32 bit address
                  input PSELx,              //select slave
                  input PENABLE,            //indicate 2nd or subsequent cycle
                  input PWRITE,             //high->write, low->read
@@ -13,7 +13,7 @@ module gpio_slave(input PCLK,               //clock
     
     reg [31:0] temp_data;
     
-    always @(*) begin
+  always @(*) begin //always combinational
         if (!PRESETn)
         begin
             PREADY  = 0;
