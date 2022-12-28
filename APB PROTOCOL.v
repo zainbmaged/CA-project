@@ -18,7 +18,7 @@ module apb_prptocol(input PCLK,
      PWRITE, PWDATA , read_dataout, PRDATA,  apb_write_data,
      apb_write_paddr, apb_read_paddr ,PSlavErr);
      
-     gpio_apb  Design_slave(PCLK,PRESETn, PADDR, PSEL1,PENABLE,PWRITE,
+     gpio_slave  Design_slave(PCLK,PRESETn, PADDR, PSEL1,PENABLE,PWRITE,
     PWDATA, PREADY ,PRDATA , PSlavErr);
     
 endmodule
