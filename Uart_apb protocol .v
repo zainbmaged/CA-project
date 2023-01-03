@@ -22,15 +22,15 @@ module uart_apb_prptocol(input PCLK,
      
      uart_slave  Design_slave(PCLK,PRESETn,~PWRITE,PWRITE,PSEL1,read_dataout, tx_full,rx_empty,PREADY,apb_write_data);
     
-  # rd_uart=~pwrite, wr_uart=pwrite, rx =Psel1, tx=Pready 
-   #r-data=apb_write_data
-   #w-data=read_dataout
+  // rd_uart=~pwrite, wr_uart=pwrite, rx =Psel1, tx=Pready 
+   //r-data=apb_write_data
+   //w-data=read_dataout
   
 
 
-    input wire rd_uart, wr_uart, rx,
-    input wire [7:0] w_data,
-    output wire tx_full, rx_empty, tx,
-    output wire [7:0] r_data
+  //  input wire rd_uart, wr_uart, rx,
+    //input wire [7:0] w_data,
+    //output wire tx_full, rx_empty, tx,
+    //output wire [7:0] r_data
 endmodule
 
