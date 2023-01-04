@@ -1,16 +1,3 @@
-// --------------------------------------------------------------------
-// >>>>>>>>>>>>>>>>>>>>>>>>> COPYRIGHT NOTICE <<<<<<<<<<<<<<<<<<<<<<<<<
-// --------------------------------------------------------------------
-// Author: Ahmed Abdelazeem
-// Github: https://github.com/abdelazeem201
-// Email: ahmed_abdelazeem@outlook.com
-// Description: FIFO module
-// Dependencies: 
-// Since: 2021-12-24 15:16:50
-// LastEditors: ahmed abdelazeem
-// LastEditTime: 2021-17-18 15:16:50
-// ********************************************************************
-// Module Function:
 module fifo
    #(
     parameter B=8, // number of bits in a word
