@@ -1,10 +1,10 @@
 module uart_tx #(
-    parameter DBIT = 8,  //d a t a b i t s
+    parameter DBIT = 32,  //d a t a b i t s
     parameter SB_TICK = 16 //ticks stop for bits
 )(
     input wire clk , reset ,
     input wire tx_start , s_tick ,
-    input wire [7:0] din ,
+    input wire [31:0] din ,
     output reg tx_done_tick ,
     output wire tx 
 );
@@ -19,7 +19,7 @@ localparam [1:0]
 reg [1:0] state_reg , state_next ;
 reg [3:0] s_reg , s_next ;
 reg [2:0] n_reg , n_next ;
-reg [7:0] b_reg , b_next ;
+    reg [31:0] b_reg , b_next ;
 reg tx_reg , tx_next ;
 
 // body
