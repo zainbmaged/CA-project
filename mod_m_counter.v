@@ -1,15 +1,3 @@
-// --------------------------------------------------------------------
-// >>>>>>>>>>>>>>>>>>>>>>>>> COPYRIGHT NOTICE <<<<<<<<<<<<<<<<<<<<<<<<<
-// --------------------------------------------------------------------
-// Author: Ahmed Abdelazeem
-// Github: https://github.com/abdelazeem201
-// Email: ahmed_abdelazeem@outlook.com
-// Description: mod_m_counter Module
-// Dependencies: 
-// Since: 2021-12-18 15:24:08
-// LastEditors: ahmed abdelazeem
-// LastEditTime: 2021-12-18 15:24:08
-// ********************************************************************
 module mod_m_counter
    #(
     parameter N=8, // number of bits in counter
