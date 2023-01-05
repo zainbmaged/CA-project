@@ -13,7 +13,7 @@ module mod_m_counter
    reg [N-1:0] r_reg;
    wire [N-1:0] r_next;
 
-   // body
+
    // register
    always @(posedge clk, posedge reset)
       if (reset)
