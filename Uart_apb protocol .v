@@ -20,7 +20,7 @@ module uart_apb_prptocol(input PCLK,
      PWRITE, PWDATA , read_dataout, PRDATA,  apb_write_data,
      apb_write_paddr, apb_read_paddr ,PSlavErr);
      
-     uart  Design_slave(PCLK,PRESETn,~PWRITE,PWRITE,PSEL1,read_dataout, tx_full,rx_empty,PREADY,apb_write_data);
+	uart  Design_slave(PCLK,PRESETn,PWRITE,~PWRITE,PSEL1,read_dataout, tx_full,rx_empty,PREADY,apb_write_data);
     
   // rd_uart=~pwrite, wr_uart=pwrite, rx =Psel1, tx=Pready 
    //r-data=apb_write_data
