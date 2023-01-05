@@ -114,7 +114,7 @@ begin
 	  else setup_error = 0;
           end
           begin
-          if((write_data===8'dx) && (Read_write) && (cur_s==setup || cur_s==access))
+		  if((write_data===32'dx) && (Read_write) && (cur_s==setup || cur_s==access))
 		  invalid_write_data =1;
 	  else invalid_write_data = 0;
           end
