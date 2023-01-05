@@ -18,12 +18,11 @@ module fifo
    reg full_reg, empty_reg, full_next, empty_next;
    wire wr_en;
 
-   // body
-   // register file write operation
+ 
    always @(posedge clk)
       if (wr_en)
          array_reg[w_ptr_reg] <= w_data;
-   // register file read operation
+   
    assign r_data = array_reg[r_ptr_reg];
    // write enabled only when FIFO is not full
    assign wr_en = wr & ~full_reg;
@@ -49,7 +48,7 @@ module fifo
    // next-state logic for read and write pointers
    always @*
    begin
-      // successive pointer values
+    
       w_ptr_succ = w_ptr_reg + 1;
       r_ptr_succ = r_ptr_reg + 1;
       // default: keep old values
@@ -58,7 +57,7 @@ module fifo
       full_next = full_reg;
       empty_next = empty_reg;
       case ({wr, rd})
-         // 2'b00:  no op
+    
          2'b01: // read
             if (~empty_reg) // not empty
                begin
