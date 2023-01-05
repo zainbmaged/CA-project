@@ -1,5 +1,5 @@
 module uart_rx
-  #(parameter DBIT = 32,
+  #(parameter DBIT = 8,
              SB_TICK = 16
                        )
   (
