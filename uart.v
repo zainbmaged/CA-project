@@ -4,19 +4,7 @@
 `include "flag_buf.v"
 `include "mod_m_counter.v"
 
-// --------------------------------------------------------------------
-// >>>>>>>>>>>>>>>>>>>>>>>>> COPYRIGHT NOTICE <<<<<<<<<<<<<<<<<<<<<<<<<
-// --------------------------------------------------------------------
-// Author: Ahmed Abdelazeem
-// Github: https://github.com/abdelazeem201
-// Email: ahmed_abdelazeem@outlook.com
-// Description: UART module
-// Dependencies: 
-// Since: 2021-12-24 15:16:50
-// LastEditors: ahmed abdelazeem
-// LastEditTime: 2021-17-24 15:16:50
-// ********************************************************************
-// Module Function:
+
 module uart
    #( // Default setting:
       // 19,200 baud, 8 data bits, 1 stop bit, 2^2 FIFO
