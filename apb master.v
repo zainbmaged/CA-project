@@ -37,7 +37,7 @@ begin
 	  nex_s = idle;
 	else
       begin
-           pwrite = ~Read_write;
+           pwrite = Read_write;
 	
 	case(cur_s)
 	idle: begin
@@ -50,7 +50,7 @@ begin
 	
 	setup:begin
 		penable=0;		
-		 if(Read_write) 
+		if(!Read_write) 
 			
 	                       begin   paddr = read_addr; end
 			    else 
@@ -71,7 +71,7 @@ begin
 		      begin
 			if(pready)
 			  begin 
-			        if(!Read_write)
+			        if(Read_write)
 				begin
 				nex_s = setup; end
 			
@@ -114,17 +114,17 @@ begin
 	  else setup_error = 0;
           end
           begin
-          if((write_data===8'dx) && (!Read_write) && (cur_s==setup || cur_s==access))
+          if((write_data===8'dx) && (Read_write) && (cur_s==setup || cur_s==access))
 		  invalid_write_data =1;
 	  else invalid_write_data = 0;
           end
           begin
-	 if((write_addr===33'dx) && Read_write && (cur_s==setup || cur_s==access))
+		  if((write_addr===33'dx) && (!Read_write) && (cur_s==setup || cur_s==access))
 		  invalid_read_paddr = 1;
 	  else  invalid_read_paddr = 0;
           end
           begin
-         if((write_addr===33'dx) && (!Read_write) && (cur_s==setup || cur_s==access))
+         if((write_addr===33'dx) && (Read_write) && (cur_s==setup || cur_s==access))
 		  invalid_write_paddr =1;
           else invalid_write_paddr =0;
           end
