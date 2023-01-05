@@ -119,7 +119,7 @@ begin
 	  else invalid_write_data = 0;
           end
           begin
-		  if((write_addr===33'dx) && (!Read_write) && (cur_s==setup || cur_s==access))
+		  if((read_addr===33'dx) && (!Read_write) && (cur_s==setup || cur_s==access))
 		  invalid_read_paddr = 1;
 	  else  invalid_read_paddr = 0;
           end
