@@ -104,7 +104,7 @@ begin
 	     setup_error =0;
 	     invalid_read_paddr = 0;
 	     invalid_write_paddr = 0;
-	     invalid_write_paddr =0 ;
+	     invalid_read_paddr =0 ;
 	    end 
         else
 	 begin	
